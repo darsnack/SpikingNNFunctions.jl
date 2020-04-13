@@ -17,7 +17,7 @@ function lif(t::Real, I, V; R, tau)
 
     return V
 end
-function lif!(t::Real, I::Vector{<:Real}, V::Vector{<:Real}; R::Vector{<:Real}, tau::Vector{<:Real})
+function lif!(t::AbstractArray{<:Real}, I::AbstractArray{<:Real}, V::AbstractArray{<:Real}; R::AbstractArray{<:Real}, tau::AbstractArray{<:Real})
     # account for leakage
     @. V *= exp(-t / tau)
 
@@ -26,7 +26,7 @@ function lif!(t::Real, I::Vector{<:Real}, V::Vector{<:Real}; R::Vector{<:Real}, 
 
     return V
 end
-function lif!(t::Real, I::CuVector{<:Real}, V::CuVector{<:Real}; R::CuVector{<:Real}, tau::CuVector{<:Real})
+function lif!(t::CuVector{<:Real}, I::CuVector{<:Real}, V::CuVector{<:Real}; R::CuVector{<:Real}, tau::CuVector{<:Real})
     # account for leakage
     @. V *= exp(-t / tau)
 

@@ -1,5 +1,6 @@
 module SNNlib
 
+using LoopVectorization
 using CuArrays
 const use_cuda = Ref(false)
 

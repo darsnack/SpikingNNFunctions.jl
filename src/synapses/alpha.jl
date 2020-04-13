@@ -13,15 +13,16 @@ Use `CuVector` instead of `Vector` for GPU support.
 function alpha(t::Real, lastspike, q, tau)
     Δ = t - lastspike
 
-    return (Δ >= 0) * Δ * (q / tau) * exp(-(Δ - tau) / tau)
+    return (Δ >= 0 && Δ < Inf) * Δ * (q / tau) * exp(-(Δ - tau) / tau)
 end
-function alpha(t::Real, lastspike::Vector{<:Real}, q::Vector{<:Real}, tau::Vector{<:Real})
+function alpha(t::Real, lastspike::AbstractArray{<:Real}, q::AbstractArray{<:Real}, tau::AbstractArray{<:Real})
+    Δ = t .- lastspike
+    I = @. Δ * (q / tau) * exp(-(Δ - tau) / tau)
+
+    return @. (Δ >= 0) * (Δ < Inf) * I
+end
+function alpha(t::Real, lastspike::CuVecOrMat{<:Real}, q::CuVecOrMat{<:Real}, tau::CuVecOrMat{<:Real})
     Δ = t .- lastspike
 
-    return @. (Δ >= 0) * Δ * (q / tau) * exp(-(Δ - tau) / tau)
-end
-function alpha(t::Real, lastspike::CuVector{<:Real}, q::CuVector{<:Real}, tau::CuVector{<:Real})
-    Δ = t .- lastspike
-
-    return @. (Δ >= 0) * Δ * (q / tau) * exp(-(Δ - tau) / tau)
+    return @. (Δ >= 0) * (Δ < Inf) * Δ * (q / tau) * exp(-(Δ - tau) / tau)
 end

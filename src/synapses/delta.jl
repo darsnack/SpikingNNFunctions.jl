@@ -9,6 +9,6 @@ Use `CuVector` instead of `Vector` for GPU support.
 - `lastspike::Vector{<:Real}`: last pre-synaptic spike time
 - `q::Vector{<:Real}`: amplitude
 """
-delta(t::Real, lastspike, q) = (t == lastspike) * q
-delta(t::Real, lastspike::Vector{<:Real}, q::Vector{<:Real}) = (t .== lastspike) .* q
-delta(t::Real, lastspike::CuVector{<:Real}, q::CuVector{<:Real}) = (t .== lastspike) .* q
+delta(t::Real, lastspike, q) = (t ≈ lastspike) * q
+delta(t::Real, lastspike::AbstractArray{<:Real}, q::AbstractArray{<:Real}) = (t .≈ lastspike) .* q
+delta(t::Real, lastspike::CuVecOrMat{<:Real}, q::CuVecOrMat{<:Real}) = (t .≈ lastspike) .* q

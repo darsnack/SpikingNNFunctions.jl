@@ -1,5 +1,6 @@
 module Synapse
 
+using LoopVectorization
 using CuArrays
 
 include("delta.jl")

@@ -10,7 +10,9 @@ Use `CuVector` instead of `Vector` to evaluate on GPU.
 - `eta::Vector{Function}`: post-synaptic response function
 """
 srm0(t::Real, I, V; lastspike, eta) = eta(t - lastspike) + I
-srm0!(t::Real, I::Vector{<:Real}, V::Vector{<:Real}; lastspike::Vector{<:Real}, eta::Vector{<:Function}) =
-    (V .= map.(x -> eta(t - x), lastspike) .+ I)
-srm0!(t::Real, I::CuVector{<:Real}, V::CuVector{<:Real}; lastspike::CuVector{<:Real}, eta::Vector{<:Function}) =
-    (V .= map.(x -> eta(t - x), lastspike) .+ I)
+function srm0!(t::Real, I::AbstractArray{<:Real}, V::AbstractArray{<:Real}; lastspike::AbstractArray{<:Real}, eta)
+    V .= map.(eta, (t .- lastspike))
+    V .+= I
+end
+srm0!(t::Real, I::CuVector{<:Real}, V::CuVector{<:Real}; lastspike::CuVector{<:Real}, eta) =
+    V .= map.(eta, t .- lastspike) .+ I

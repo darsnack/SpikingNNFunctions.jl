@@ -16,7 +16,7 @@ function poisson(baserate, theta, deltav, v; dt::Real)
 
     return rand() < rho * dt
 end
-function poisson(baserate::Vector{<:Real}, theta::Vector{<:Real}, deltav::Vector{<:Real}, v::Vector{<:Real}; dt::Real)
+function poisson(baserate::AbstractArray{<:Real}, theta::AbstractArray{<:Real}, deltav::AbstractArray{<:Real}, v::AbstractArray{<:Real}; dt::Real)
     rho = baserate .* exp.((v .- theta) ./ deltav)
 
     return rand(length(rho)) .< rho .* dt

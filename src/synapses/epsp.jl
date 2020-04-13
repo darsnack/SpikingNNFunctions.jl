@@ -14,15 +14,16 @@ Use `CuVector` instead of `Vector` for GPU support.
 function epsp(t::Real, lastspike, q, taum, taus)
     Δ = t - lastspike
 
-    return (Δ >= 0) * q / (taum - taus) * (exp(-Δ / taum) - exp(-Δ / taus))
+    return (Δ >= 0 && Δ < Inf && taus != taum) * q / (1 - taus / taum) * (exp(-Δ / taum) - exp(-Δ / taus))
 end
-function epsp(t::Real, lastspike::Vector{<:Real}, q::Vector{<:Real}, taum::Vector{<:Real}, taus::Vector{<:Real})
+function epsp(t::Real, lastspike::AbstractArray{<:Real}, q::AbstractArray{<:Real}, taum::AbstractArray{<:Real}, taus::AbstractArray{<:Real})
+    Δ = t .- lastspike
+    I = @. q / (1 - taus / taum) * (exp(-Δ / taum) - exp(-Δ / taus))
+
+    return @. (Δ >= 0) * (Δ < Inf) * (taus != taum) * I
+end
+function epsp(t::Real, lastspike::CuVecOrMat{<:Real}, q::CuVecOrMat{<:Real}, taum::CuVecOrMat{<:Real}, taus::CuVecOrMat{<:Real})
     Δ = t .- lastspike
 
-    return @. (Δ >= 0) * q / (taum - taus) * (exp(-Δ / taum) - exp(-Δ / taus))
-end
-function epsp(t::Real, lastspike::CuVector{<:Real}, q::CuVector{<:Real}, taum::CuVector{<:Real}, taus::CuVector{<:Real})
-    Δ = t .- lastspike
-
-    return @. (Δ >= 0) * q / (taum - taus) * (exp(-Δ / taum) - exp(-Δ / taus))
+    return @. (Δ >= 0) * (Δ < Inf) * (taus != taum) * q / (1 - taus / taum) * (exp(-Δ / taum) - exp(-Δ / taus))
 end
