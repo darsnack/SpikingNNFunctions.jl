@@ -12,7 +12,7 @@ Use `CuVector` instead of `Vector` to evaluate on GPU.
 srm0(t::Real, I, V; lastspike, eta) = eta(t - lastspike) + I
 function srm0!(t::Real, I::AbstractArray{<:Real}, V::AbstractArray{<:Real}; lastspike::AbstractArray{<:Real}, eta)
     V .= map.(eta, (t .- lastspike))
-    V .+= I
+    @avx V .+= I
 end
 srm0!(t::Real, I::CuVector{<:Real}, V::CuVector{<:Real}; lastspike::CuVector{<:Real}, eta) =
     V .= map.(eta, t .- lastspike) .+ I

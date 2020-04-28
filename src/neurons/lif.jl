@@ -19,10 +19,10 @@ function lif(t::Real, I, V; R, tau)
 end
 function lif!(t::AbstractArray{<:Real}, I::AbstractArray{<:Real}, V::AbstractArray{<:Real}; R::AbstractArray{<:Real}, tau::AbstractArray{<:Real})
     # account for leakage
-    @. V *= exp(-t / tau)
+    @avx @. V *= exp(-t / tau)
 
     # apply update step
-    @. V += I * (R / tau)
+    @avx @. V += I * (R / tau)
 
     return V
 end
