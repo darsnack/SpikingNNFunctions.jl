@@ -1,7 +1,7 @@
-using Documenter, BitSAD
+using Documenter, SpikingNNFunctions
 
 makedocs(;
-    modules=[BitSAD],
+    modules=[SpikingNNFunctions],
     format=Documenter.HTML(),
     pages=[
         "Home" => "index.md",
