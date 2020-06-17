@@ -17,8 +17,8 @@ function epsp(t::Real, lastspike, q, taum, taus)
     return (Δ >= 0 && Δ < Inf && taus != taum) * q / (1 - taus / taum) * (exp(-Δ / taum) - exp(-Δ / taus))
 end
 function epsp(t::Real, lastspike::AbstractArray{<:Real}, q::AbstractArray{<:Real}, taum::AbstractArray{<:Real}, taus::AbstractArray{<:Real})
-    @avx Δ = t .- lastspike
-    @avx I = @. q / (1 - taus / taum) * (exp(-Δ / taum) - exp(-Δ / taus))
+    Δ = t .- lastspike
+    I = @. q / (1 - taus / taum) * (exp(-Δ / taum) - exp(-Δ / taus))
 
     return map((ts, tm, δ, i) -> (δ >= 0) && (δ < Inf) && (ts != tm) ? i : zero(i), taus, taum, Δ, I)
 end
