@@ -4,5 +4,5 @@ We provide non-mutating functions for the following threshold models:
 - Inhomogenouos Poisson process
 
 ```@docs
-Threshold.poisson
+SpikingNNFunctions.Threshold.poisson
 ```

@@ -6,7 +6,7 @@ We provide non-mutating functions for the following synapse models:
 - Excited Postsynaptic Potential (EPSP)
 
 ```@docs
-Synapse.delta
-Synapse.alpha
-Synapse.epsp
+SpikingNNFunctions.Synapse.delta
+SpikingNNFunctions.Synapse.alpha
+SpikingNNFunctions.Synapse.epsp
 ```

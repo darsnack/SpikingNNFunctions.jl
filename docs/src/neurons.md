@@ -5,8 +5,6 @@ We provide in-place and non-mutating functions for the following neuron models:
 - Simplified Spike Response Model (SRM0)
 
 ```@docs
-Neuron.lif
-Neuron.lif!
-Neuron.srm0
-Neuron.srm0!
+SpikingNNFunctions.Neuron.lif
+SpikingNNFunctions.Neuron.srm0
 ```
