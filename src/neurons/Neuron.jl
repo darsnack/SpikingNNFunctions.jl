@@ -1,6 +1,5 @@
 module Neuron
 
-using LoopVectorization
 using CuArrays
 
 include("lif.jl")
