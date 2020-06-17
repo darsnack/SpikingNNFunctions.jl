@@ -1,14 +1,17 @@
 """
-    alpha(t, lastspike, q, tau)
+    alpha(t::Real, lastspike, q, tau)
+    alpha(t::Real, lastspike::AbstractArray{<:Real}, q::AbstractArray{<:Real}, tau::AbstractArray{<:Real})
+    alpha(t::Real, lastspike::CuVecOrMat{<:Real}, q::CuVecOrMat{<:Real}, tau::CuVecOrMat{<:Real})
 
-Evaluate an alpha synapse.
+Evaluate an alpha synapse. Modeled as `(t - lastspike) * (q / τ) * exp(-(t - lastspike - τ) / τ) Θ(t - lastspike)`
+  (where `Θ` is the Heaviside function).
 Use `CuVector` instead of `Vector` for GPU support.
 
 # Fields
-- `t::Real`: current time
-- `lastspike::Vector{<:Real}`: last pre-synaptic spike time
-- `q::Vector{<:Real}`: amplitude
-- `tau::Vector{<:Real}`: time constant
+- `t`: current time
+- `lastspike`: last pre-synaptic spike time
+- `q`: amplitude
+- `tau`: time constant
 """
 function alpha(t::Real, lastspike, q, tau)
     Δ = t - lastspike

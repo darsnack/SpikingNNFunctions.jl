@@ -1,15 +1,22 @@
 """
-    epsp(t, lastspike, q, tau)
+    epsp(t::Real, lastspike, q, taum, taus)
+    epsp(t::Real, lastspike::AbstractArray{<:Real}, q::AbstractArray{<:Real}, taum::AbstractArray{<:Real}, taus::AbstractArray{<:Real})
+    epsp(t::Real, lastspike::CuVecOrMat{<:Real}, q::CuVecOrMat{<:Real}, taum::CuVecOrMat{<:Real}, taus::CuVecOrMat{<:Real})
 
-Evaluate an EPSP synapse.
+Evaluate an EPSP synapse. Modeled as `(ϵ₀ / τm - τs) * (exp(-Δ / τm) - exp(-Δ / τs)) Θ(Δ)`
+  (where `Θ` is the Heaviside function and `Δ = t - lastspike`).
+Specifically, this is the EPSP time course for the SRM0 model introduced by Gerstner.
+Details: [Spiking Neuron Models: Single Neurons, Populations, Plasticity]
+         (https://icwww.epfl.ch/~gerstner/SPNM/node27.html#SECTION02323400000000000000)
+
 Use `CuVector` instead of `Vector` for GPU support.
 
 # Fields
-- `t::Real`: current time
-- `lastspike::Vector{<:Real}`: last pre-synaptic spike time
-- `q::Vector{<:Real}`: amplitude
-- `taum::Vector{<:Real}`: rise time constant
-- `taus::Vector{<:Real}`: fall time constant
+- `t`: current time
+- `lastspike`: last pre-synaptic spike time
+- `q`: amplitude
+- `taum`: rise time constant
+- `taus`: fall time constant
 """
 function epsp(t::Real, lastspike, q, taum, taus)
     Δ = t - lastspike

@@ -1,15 +1,18 @@
 """
-    lif!(I, V; R, vreset, tau)
+    lif(t::Real, I, V; R, tau)
+    lif!(t::AbstractArray{<:Real}, I::AbstractArray{<:Real}, V::AbstractArray{<:Real}; R::AbstractArray{<:Real}, tau::AbstractArray{<:Real})
+    lif!(t::CuVector{<:Real}, I::CuVector{<:Real}, V::CuVector{<:Real}; R::CuVector{<:Real}, tau::CuVector{<:Real})
 
 Evaluate a leaky integrate-and-fire neuron.
 Use `CuVector` instead of `Vector` to evaluate on GPU.
 
 # Fields
-- `I::Vector{<:Real}`: external current
-- `V::Vector{<:Real}`: membrane potential
-- `R::Vector{<:Real}`: resistance constant
-- `vreset::Vector{<:Real}`: reset potential
-- `tau::Vector{<:Real}`: time constant
+- `t`: time since last evaluation in seconds
+- `I`: external current
+- `V`: current membrane potential
+- `R`: resistance constant
+- `vreset`: reset potential
+- `tau`: time constant
 """
 function lif(t::Real, I, V; R, tau)
     V *= exp(-t / tau)

@@ -1,13 +1,17 @@
 """
-    srm0!(I, lastspike; eta)
+    srm0(t::Real, I, V; lastspike, eta)
+    srm0!(t::Real, I::AbstractArray{<:Real}, V::AbstractArray{<:Real}; lastspike::AbstractArray{<:Real}, eta)
+    srm0!(t::Real, I::CuVector{<:Real}, V::CuVector{<:Real}; lastspike::CuVector{<:Real}, eta)
 
 Evaluate a SRM0 neuron.
 Use `CuVector` instead of `Vector` to evaluate on GPU.
 
 # Fields
-- `I::Vector{<:Real}`: external current
-- `lastspike::Vector{<:Real}`: time of last output spike
-- `eta::Vector{Function}`: post-synaptic response function
+- `t`: current time in seconds
+- `I`: external current
+- `V`: current membrane potential
+- `lastspike`: time of last output spike in seconds
+- `eta`: post-synaptic response function
 """
 srm0(t::Real, I, V; lastspike, eta) = eta(t - lastspike) + I
 function srm0!(t::Real, I::AbstractArray{<:Real}, V::AbstractArray{<:Real}; lastspike::AbstractArray{<:Real}, eta)
