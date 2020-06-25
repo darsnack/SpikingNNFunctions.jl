@@ -1,7 +1,11 @@
 name: Documentation
 on:
-  - push
-  - release
+  push:
+    branches:
+      - master
+    tags: '*'
+  pull_request:
+
 jobs:
   docs:
     name: Documentation
