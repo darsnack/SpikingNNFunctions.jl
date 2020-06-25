@@ -2,7 +2,9 @@ using Documenter, SpikingNNFunctions
 
 makedocs(;
     modules=[SpikingNNFunctions],
-    format=Documenter.HTML(),
+    format=Documenter.HTML(
+            canonical = "https://darsnack.github.io/SpikingNNFunctions.jl/stable"
+        ),
     pages=[
         "Home" => "index.md",
         "API" => [
