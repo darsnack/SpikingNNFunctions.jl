@@ -1,3 +1,5 @@
+using Random
+
 """
     poisson(baserate, theta, deltav, v; dt::Real)
     poisson(baserate::AbstractArray{<:Real}, theta::AbstractArray{<:Real}, deltav::AbstractArray{<:Real}, v::AbstractArray{<:Real}; dt::Real)
@@ -19,18 +21,18 @@ Use `CuVector` instead of `Vector` to evaluate on GPU.
 - `v`: current membrane potential
 - `dt`: simulation timestep
 """
-function poisson(baserate, theta, deltav, v; dt::Real)
+function poisson(baserate, theta, deltav, v; dt::Real, rng::AbstractRNG = Random.GLOBAL_RNG)
     rho = baserate * exp((v - theta) / deltav)
 
-    return rand() < rho * dt
+    return rand(rng) < rho * dt
 end
-function poisson(baserate::AbstractArray{<:Real}, theta::AbstractArray{<:Real}, deltav::AbstractArray{<:Real}, v::AbstractArray{<:Real}; dt::Real)
+function poisson(baserate::AbstractArray{<:Real}, theta::AbstractArray{<:Real}, deltav::AbstractArray{<:Real}, v::AbstractArray{<:Real}; dt::Real, rng::AbstractRNG = Random.GLOBAL_RNG)
     rho = baserate .* exp.((v .- theta) ./ deltav)
 
-    return rand(length(rho)) .< rho .* dt
+    return rand(rng, length(rho)) .< rho .* dt
 end
-function poisson(baserate::CuVector{<:Real}, theta::CuVector{<:Real}, deltav::CuVector{<:Real}, v::CuVector{<:Real}; dt::Real)
+function poisson(baserate::CuVector{<:Real}, theta::CuVector{<:Real}, deltav::CuVector{<:Real}, v::CuVector{<:Real}; dt::Real, rng::AbstractRNG = Random.GLOBAL_RNG)
     rho = baserate .* exp.((v .- theta) ./ deltav)
 
-    return CuArrays.rand(length(rho)) .< rho .* dt
+    return CuArrays.rand(rng, length(rho)) .< rho .* dt
 end
