@@ -1,9 +1,9 @@
 using Random
 
 """
-    poisson(baserate, theta, deltav, v; dt::Real)
-    poisson(baserate::AbstractArray{<:Real}, theta::AbstractArray{<:Real}, deltav::AbstractArray{<:Real}, v::AbstractArray{<:Real}; dt::Real)
-    poisson(baserate::CuVector{<:Real}, theta::CuVector{<:Real}, deltav::CuVector{<:Real}, v::CuVector{<:Real}; dt::Real)
+    poisson(baserate, theta, deltav, v; dt::Real, rng::AbstractRNG)
+    poisson(baserate::AbstractArray{<:Real}, theta::AbstractArray{<:Real}, deltav::AbstractArray{<:Real}, v::AbstractArray{<:Real}; dt::Real, rng::AbstractRNG)
+    poisson(baserate::CuVector{<:Real}, theta::CuVector{<:Real}, deltav::CuVector{<:Real}, v::CuVector{<:Real}; dt::Real, rng::AbstractRNG)
 
 Evaluate inhomogeneous Poisson process threshold functions.
 Modeled as
@@ -20,6 +20,7 @@ Use `CuVector` instead of `Vector` to evaluate on GPU.
 - `deltav`: potential resolution
 - `v`: current membrane potential
 - `dt`: simulation timestep
+- `rng`: random number generation
 """
 function poisson(baserate, theta, deltav, v; dt::Real, rng::AbstractRNG = Random.GLOBAL_RNG)
     rho = baserate * exp((v - theta) / deltav)
