@@ -10,28 +10,28 @@ Use `CuVector` instead of `Vector` to evaluate on GPU.
 - `t`: time since last evaluation in seconds
 - `I`: external current
 - `V`: current membrane potential
+- `vrest`: resting membrane potential
 - `R`: resistance constant
-- `vreset`: reset potential
 - `tau`: time constant
 """
-function lif(t::Real, I, V; R, tau)
-    V *= exp(-t / tau)
+function lif(t::Real, I, V; vrest, R, tau)
+    V = V * exp(-t / tau) + vrest
     V += I * (R / tau)
 
     return V
 end
-function lif!(t::AbstractArray{<:Real}, I::AbstractArray{<:Real}, V::AbstractArray{<:Real}; R::AbstractArray{<:Real}, tau::AbstractArray{<:Real})
+function lif!(t::AbstractArray{<:Real}, I::AbstractArray{<:Real}, V::AbstractArray{<:Real}; vrest::AbstractArray{<:Real}, R::AbstractArray{<:Real}, tau::AbstractArray{<:Real})
     # account for leakage
-    @. V *= exp(-t / tau)
+    @. V = V * exp(-t / tau) + vrest
 
     # apply update step
     @. V += I * (R / tau)
 
     return V
 end
-function lif!(t::CuVector{<:Real}, I::CuVector{<:Real}, V::CuVector{<:Real}; R::CuVector{<:Real}, tau::CuVector{<:Real})
+function lif!(t::CuVector{<:Real}, I::CuVector{<:Real}, V::CuVector{<:Real}; vrest::CuVector{<:Real}, R::CuVector{<:Real}, tau::CuVector{<:Real})
     # account for leakage
-    @. V *= exp(-t / tau)
+    @. V = V * exp(-t / tau) + vrest
 
     # apply update step
     @. V += I * (R / tau)
