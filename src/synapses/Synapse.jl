@@ -1,6 +1,6 @@
 module Synapse
 
-using CuArrays
+using CUDA
 
 include("delta.jl")
 include("alpha.jl")

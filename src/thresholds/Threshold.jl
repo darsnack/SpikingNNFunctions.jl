@@ -1,6 +1,6 @@
 module Threshold
 
-using CuArrays
+using CUDA
 
 include("poisson.jl")
 

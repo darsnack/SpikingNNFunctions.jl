@@ -1,6 +1,6 @@
 module Neuron
 
-using CuArrays
+using CUDA
 
 include("lif.jl")
 include("srm0.jl")
