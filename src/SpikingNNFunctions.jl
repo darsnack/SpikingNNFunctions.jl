@@ -1,6 +1,6 @@
 module SpikingNNFunctions
 
-using CuArrays
+using CUDA
 
 include("neurons/Neuron.jl")
 include("synapses/Synapse.jl")
